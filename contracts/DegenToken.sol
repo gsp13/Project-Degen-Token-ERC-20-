@@ -24,7 +24,8 @@ Burning tokens: Anyone should be able to burn tokens, that they own, that are no
     }
     
     Item[] public _storeItems;
-        
+    mapping (address=>string[])  private _accountPurchases;   
+
     constructor() ERC20("Degen", "DGN") {
         addStoreItem(Item("Abaddon The Despoiler",1000,"Under his rule, there is but one creed: Chaos shall reign."));
         addStoreItem(Item("Yoshimaru, Ever Faithful",3500,"Day after day he sat there, knowing that the Wanderer would soon be back for him."));
@@ -33,22 +34,23 @@ Burning tokens: Anyone should be able to burn tokens, that they own, that are no
     function addStoreItem(Item memory _item) public{
         _storeItems.push(_item);
     }
-    function mint(address _to, uint256 _tokenAmount) public onlyOwner {
-            _mint(_to, _tokenAmount);
+   function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount * 10  ** decimals());
+    }
+    function burn(uint256 tokenAmount) override public {
+        require(balanceOf(msg.sender)>= (tokenAmount* 10  ** decimals()),"You cannot burn the specified token amount given your account balance");
+        _burn(msg.sender,tokenAmount * 10  ** decimals());
     }
     function transferTokens(address _receiver, uint256 _tokenAmount) public{
-        require (balanceOf(msg.sender)>= _tokenAmount,"Your DGN token balance is insufficient for conducting a successful transaction.");
+        uint256 convertedAmount=_tokenAmount* 10  ** decimals();
+        require (balanceOf(msg.sender)>= convertedAmount ,"Your DGN token balance is insufficient for conducting a successful transaction.");
         approve(msg.sender,_tokenAmount);
-        transferFrom(msg.sender , _receiver,_tokenAmount);
+        transfer(_receiver,convertedAmount);
 
     }
 
     function checkTokenBalance() external view returns (uint256){
-        return balanceOf(msg.sender);
-    }
-    function burnTokens(uint256 tokenAmount) public {
-        require(balanceOf(msg.sender)>= tokenAmount,"You cannot burn the specified token amount given your account balance");
-        _burn(msg.sender,tokenAmount);
+        return balanceOf(msg.sender)/( 10  ** decimals());
     }
 
     function displayAvailableItems() external view returns(string memory){
@@ -68,12 +70,17 @@ Burning tokens: Anyone should be able to burn tokens, that they own, that are no
         }
         return result;
     }
+    
+    function displayPurchases() external view returns(string[] memory){
+        return _accountPurchases[msg.sender];
+    }
      function redeemTokens(uint itemID) external payable returns (string memory) {
         require(itemID>0 && itemID<=_storeItems.length,"Invalid Item ID"); 
         Item memory selectedItem= _storeItems[itemID-1];
-        require(balanceOf(msg.sender)>=selectedItem.itemPrice);
+        require((balanceOf(msg.sender)) >=(selectedItem.itemPrice * 10  ** decimals()) ,"You do not have enough tokens to redeem this item");
+        approve(msg.sender, selectedItem.itemPrice);
         transferTokens(owner(),selectedItem.itemPrice);
-        transferOwnership(msg.sender);
+        _accountPurchases[msg.sender].push(selectedItem.itemName);
         return string.concat("Purchased Item ID:",Strings.toString(itemID-1));
      }
 }
