@@ -1,40 +1,15 @@
-# Project Title
-
-Simple overview of use/purpose.
+# DEGEN TOKEN
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+DEGEN Token ERC20 Compliant contract on the Avalanche Fuji Testnet Network.
 
-## Getting Started
-
-### Installing
-
-* How/where to download your program
-* Any modifications needed to be made to files/folders
-
-### Executing program
-
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
-
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
-
-## Authors
-
-Contributors names and contact info
-
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
-
+### Functionalities
+Minting new tokens: The platform should be able to create new tokens and distribute them to players as rewards. Only the owner can mint tokens.
+Transferring tokens: Players should be able to transfer their tokens to others.
+Redeeming tokens: Players should be able to redeem their tokens for items in the in-game store.
+Checking token balance: Players should be able to check their token balance at any time.
+Burning tokens: Anyone should be able to burn tokens, that they own, that are no longer needed.
 
 ## License
 
