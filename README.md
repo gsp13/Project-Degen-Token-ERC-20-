@@ -11,6 +11,6 @@ DEGEN Token ERC20 Compliant contract on the Avalanche Fuji Testnet Network.
 * Checking token balance: Players should be able to check their token balance at any time.
 * Burning tokens: Anyone should be able to burn tokens, that they own, that are no longer needed.
 
-## License
+## Author
 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
+Gian Nicole L. Pangan
